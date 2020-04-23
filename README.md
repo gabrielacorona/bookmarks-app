@@ -1,7 +1,7 @@
-#Lab 7 Bookmarks App using nodejs server
+# Lab 7 Bookmarks App using nodejs server
 ____
 
-##Steps to inicialize and setup Nodejs server:
+## Steps to inicialize and setup Nodejs server:
 
 ### 1. run npm init to initialize the local server
 Fill in wth the information asked by the command prompt
