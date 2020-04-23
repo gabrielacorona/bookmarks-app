@@ -1,0 +1,28 @@
+{
+  "name": "bookmarks-app",
+  "version": "1.0.0",
+  "description": "This server is to learn how to create a bookmarks functional webpage with CRUD functionality",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "Gabriela Corona",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.3",
+    "uuid": "^7.0.3"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrielacorona/bookmarks-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gabrielacorona/bookmarks-app/issues"
+  },
+  "homepage": "https://github.com/gabrielacorona/bookmarks-app#readme"
+}
