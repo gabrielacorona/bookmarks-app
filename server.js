@@ -6,10 +6,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const uuid = require('uuid');
+const mongoose = require('mongoose');
 
 
+ 
 const validateKey = require('./middleware/validate-bearer-token');
 const jsonParser = bodyParser.json();
+const {Bookmarks} = require('./bookmarksModel');
 
 const app = express();
 
@@ -65,62 +68,31 @@ app.patch('/bookmark/:id', jsonParser, (req, res) => {
         return res.status(409).end()
     }
 
-    let itemToUpdate = availablePosts.findIndex((post) => {
-        if (post.id === id) {
-            return true;
-        }
-    });
 
-    if (itemToUpdate < 0) {
-        res.statusMessage = "id wasn't found in the list";
-        return res.status(400).end();
-    }
+    Bookmarks.patchbyId(bodyId,title,description,url,rating)
+        .then(itemToUpdate =>{
+            if(itemToUpdate){
+                res.statusMessage = "post updated";
+                return res.status(202).end();
 
-    if (title != undefined) {
-        availablePosts[itemToUpdate].title = title;
-    }
+            }
+            else{
+                res.statusMessage = "id wasn't found in the list";
+                return res.status(400).end();
+            }
+        })
+        .catch(err=>{
+            res.statusMessage = "Something went wrong. Try again later.";
+            return res.status(500).end();
+        })
 
-    if (description != undefined) {
-        availablePosts[itemToUpdate].description = description;
-    }
-
-    if (url != undefined) {
-        availablePosts[itemToUpdate].url = url;
-    }
-
-    if (rating != undefined) {
-        availablePosts[itemToUpdate].rating = rating;
-    }
-    
-    return res.status(202).json(availablePosts[itemToUpdate]);
+   
 
 });
 
 //deleting an existing bookmark with the id as a param
 app.delete('/api/bookmark/:id', (req, res) => {
     let id = req.query.id;
-
-    if (!id) {
-        res.statusMessage = "please send the id to delete a bookmark";
-        return res.status(406).end();
-    }
-
-    let itemToRemove = availablePosts.findIndex((post) => {
-        if (post.id === id) {
-            return true;
-        }
-    });
-
-
-    if (itemToRemove < 0) {
-        res.statusMessage = "id wasn't found in the list";
-        return res.status(400).end();
-    }
-    //console.log(itemToRemove);
-
-    //remove 1 element on that index
-    availablePosts.splice(itemToRemove, 1);
-    return res.status(204).end();
 
 });
 
@@ -138,6 +110,7 @@ app.post('/api/bookmarks', jsonParser, (req, res) => {
 
     if (!title || !description || !url || !rating) {
         res.statusMessage = "missing param";
+        console.log(req.body.title);
         return res.status(406).end(); //not accept status
     }
 
@@ -148,8 +121,17 @@ app.post('/api/bookmarks', jsonParser, (req, res) => {
         url,
         rating
     };
-    availablePosts.push(newBookmark);
-    return res.status(201).json(newBookmark);
+
+    Bookmarks
+        .createBookmark(newBookmark)
+        .then( result =>{
+            return res.status(201).json(result);
+        })  
+        .catch(err =>{
+            res.statusMessage = "Something went wrong with the DB. Try again later.";
+            return res.status(500).end();
+        })
+
 });
 
 //geting bookmarks by title
@@ -166,35 +148,55 @@ app.get('/api/bookmark', (req, res) => {
     }
 
     //loop
-    let result = [];
-    let instances = availablePosts.find((post) => {
-        if (post.title == title) {
-            // counter += 1;
-            //return post;
-            result.push(post);
-        }
-    });
-
-
-    if (!result) {
-        res.statusMessage = `no posts with the provided title 'title ? ${title}"`;
-        return res.status(404).end();
-    }
-
-    return res.status(200).json(result);
-
+    Bookmarks.getByTitle(title)
+        .then(post =>{
+            if(!post){
+                res.statusMessage = `no posts with the provided title 'title ? ${title}"`;
+                return res.status(404).end();           
+            }
+            else{
+                return res.status(200).json(post);
+            }
+        })
+        .catch(err =>{
+            res.statusMessage = "Something went wrong with the DB. Try again later.";
+            return res.status(500).end();
+        });
 });
 
 
 //get all bookmarks
 app.get('/api/bookmarks', (req, res) => {
     console.log("getting all bookmarks");
-    return res.status(200).json(availablePosts);
+    Bookmarks
+        .getAllBookmarks()
+        .then (result =>{
+            return res.status(200).json(result);
+        })
+        .catch(err =>{
+            res.statusMessage = "Something went wrong with the DB. Try again later.";
+            return res.status(500).end();
+        }); 
 });
 
 
 app.listen(8080, () => {
     console.log("This server is running on port 8080");
 
+    new Promise((resolve,reject) =>{
+        mongoose.connect('mongodb://localhost/bookmarksdb',{useNewUrlParser: true, useUnifiedTopology: true},(err)=>{
+            if(err){
+                reject(err);
+            }
+            else{
+                console.log('bookmarks database connected successfully');
+                return resolve();
+            }
+        });
+    })
+    .catch(err =>{
+        mongoose.disconnect();
+        console.log(err);
+    })
 });
 //http://localhost:8080
