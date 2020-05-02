@@ -22,10 +22,10 @@ if mongo is already running then run brew services restart mongodb-community
 This starts the mongo environment
 
 ### 3. Commands:
-    #### 3.1. show dbs
-            check which dbs are already inicialized in the environment
-    #### 3.2. use nameofdbinpluraldb
-            select the db where the operations should be run
-    #### 3.3. db.nameofdbinplural.fins()
-            see collections stored in the db
+#### 3.1. show dbs
+check which dbs are already inicialized in the environment
+#### 3.2. use nameofdbinpluraldb
+select the db where the operations should be run
+#### 3.3. db.nameofdbinplural.fins()
+see collections stored in the db
 
