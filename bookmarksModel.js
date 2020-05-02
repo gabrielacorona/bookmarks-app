@@ -55,10 +55,23 @@ const Bookmarks = {
             .find({
                 title: query
             })
-            .then(allBookmarks => {
-                return allBookmarks
+            .then(resultByTitle => {
+                return resultByTitle
             })
             .catch(err => {
+                return err;
+            });
+    },
+    getById:function(query){
+        return bookmarksColletion
+            .find({
+                id : query
+            })
+            .then(resultById =>{
+                return resultById
+
+            })
+            .catch(err =>{
                 return err;
             });
     },
@@ -67,47 +80,33 @@ const Bookmarks = {
             .deleteOne({
                 id: query
             })
-            .then(allBookmarks =>{
-                return allBookmarks
+            .then(itemToDelete => {
+                return itemToDelete
             })
             .catch(err => {
                 return err;
             });
     },
-    patchbyId: function(query,title,description,url,rating){
+    ///https://www.w3schools.com/nodejs/nodejs_mongodb_update.asp
+    patchbyId: function (query, title, description, url, rating) {
         return bookmarksColletion
-        .findOne({id:query},function(err,res){
-            if(err){
-                return err;
-            }
-            if(res === null){
-                return res;
-            }
-            if(title){
-                res.title = title;
-            }
-            if(description){
-                res.description = description;
-            }
-            if(url){
-                res.url = url;
-            }
-            if(rating){
-                res.rating = Number(rating);
-            }
-            res.save().then(res=>{
-                return res;
+            .updateOne({
+                id: query
+            }, {
+                $set: {
+                    id: query,
+                    title: title,
+                    description: description,
+                    url: url,
+                    rating: rating
+                }
+            })
+            .then(updatedBookmark =>{
+                return updatedBookmark
             })
             .catch(err =>{
                 return err;
-            })
-        })
-        .then(result =>{
-            return result;
-        })
-        .catch(err=>{
-            return err
-        })
+            });
     }
 }
 
