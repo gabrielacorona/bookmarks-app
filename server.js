@@ -47,7 +47,7 @@ app.patch('/bookmark/:id', jsonParser, (req, res) => {
     Bookmarks
         .getById(id)
         .then(itemToUpdate => {
-            if (!itemToUpdate.length === 0) {
+            if (itemToUpdate.length === 0) {
                 res.statusMessage = "Id not found";
                 return res.status(404).end();
             } 
@@ -60,6 +60,8 @@ app.patch('/bookmark/:id', jsonParser, (req, res) => {
                             return res.status(404).end(); 
                         }
                         else{
+                            console.log(!result)
+
                             res.statusMessage = "updated";
                             return res.status(200).json(result);
                         }
@@ -78,7 +80,7 @@ app.delete('/bookmark/:id', (req, res) => {
     Bookmarks
         .getById(id)
         .then(itemToRemove => {
-            if (!itemToRemove) {
+            if (itemToRemove.length === 0) {
                 res.statusMessage = "Id not found";
                 return res.status(404).end();
             } else {
