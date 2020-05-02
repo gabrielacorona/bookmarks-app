@@ -50,48 +50,26 @@ app.patch('/bookmark/:id', jsonParser, (req, res) => {
             if (!itemToUpdate.length === 0) {
                 res.statusMessage = "Id not found";
                 return res.status(404).end();
-            } else {
-                //console.log(itemToUpdate, itemToUpdate.title)
-                if(!title){
-                    title = itemToUpdate[0].title;
-                }
-                if(!description){
-                    description = itemToUpdate[0].description;
-                }
-                if(!url){
-                    url = itemToUpdate[0].url;
-                }
-                if(!rating){
-                    itemToUpdate[0].rating;
-                }
-                let newvals = {title,description,url,rating};
-                Bookmarks
-                    .patchbyId(id, newvals)
-                    .then(result => {
-                        Bookmarks
-                            .getById(id)
-                            .then(result =>{
-                                return res.status(200).end().json(result);
-                            })
-                            .catch(err =>{
-                                res.statusMessage = "Something went wrong with the DB. Try again later.";
-                                return res.status(500).end();
-                            })
-                        //res.statusMessage = "successfully updated"
-                        
-                    })
-                    .catch(err => {
-                        res.statusMessage = "Something went wrong with the DB. Try again later.";
-                        return res.status(500).end();
-                    });
-                
-                }
+            } 
+            else {
+               Bookmarks
+                    .patchbyId(id,title,description,url,Number(rating))
+                    .then(result=>{
+                        if(!result){
+                            res.statusMessage = "Id not found";
+                            return res.status(404).end(); 
+                        }
+                        else{
+                            res.statusMessage = "updated";
+                            return res.status(200).json(result);
+                        }
+                    }) 
+            }
         })
         .catch(err => {
             res.statusMessage = "Something went wrong with the DB. Try again later.";
             return res.status(500).end();
         });
-
 });
 
 //deleting an existing bookmark with the id as a param

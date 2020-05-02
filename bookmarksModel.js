@@ -88,13 +88,12 @@ const Bookmarks = {
             });
     },
     ///https://www.w3schools.com/nodejs/nodejs_mongodb_update.asp
-    patchbyId: function (query, title, description, url, rating) {
+    patchbyId: function (id, title, description, url, rating) {
         return bookmarksColletion
             .updateOne({
-                id: query
+                id: id
             }, {
                 $set: {
-                    id: query,
                     title: title,
                     description: description,
                     url: url,
