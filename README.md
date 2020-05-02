@@ -26,6 +26,6 @@ This starts the mongo environment
 check which dbs are already inicialized in the environment
 #### 3.2. use nameofdbinpluraldb
 select the db where the operations should be run
-#### 3.3. db.nameofdbinplural.fins()
+#### 3.3. db.nameofdbinplural.find()
 see collections stored in the db
 
