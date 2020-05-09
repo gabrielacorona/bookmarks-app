@@ -18,8 +18,10 @@ const {
 
 const app = express();
 
+app.use(express.static("public"));
 app.use(morgan('dev'));
 app.use(validateKey);
+
 
 // let post = [{
 //     id: uuid.v4(), --> string
@@ -77,6 +79,7 @@ app.patch('/bookmark/:id', jsonParser, (req, res) => {
 //deleting an existing bookmark with the id as a param
 app.delete('/bookmark/:id', (req, res) => {
     let id = req.params.id;
+    console.log(id)
     Bookmarks
         .getById(id)
         .then(itemToRemove => {
@@ -112,6 +115,8 @@ app.post('/bookmarks', jsonParser, (req, res) => {
     let description = req.body.description;
     let url = req.body.url;
     let rating = req.body.rating;
+
+    console.log(!title,!description,!url,!rating)
 
     if (!title || !description || !url || !rating) {
         res.statusMessage = "missing param";

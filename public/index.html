@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Bookmarks App</title>
+    <link href="./css/index.css" rel="stylesheet" type="text/csss" />
+</head>
+
+<body>
+    <form class="bookmarks-form">
+        <label>
+            Click the button to get the full list of bookmarks
+        </label>
+        <button id="submit-button" type="submit">Get bookmarks</button>
+    </form>
+    <p>
+
+    </p>
+    <form class="add-bookmark-form">
+        <label for="bookmarkTitle">
+            Title:
+        </label>
+        <input type="text" id="bookmarkTitle" />
+        <label for="bookmarkDes">
+            Description:
+        </label>
+        <input type="text" id="bookmarkDes" />
+        <label for="bookmarkUrl">
+            url:
+        </label>
+        <input type="text" id="bookmarkUrl" />
+        <label for="bookmarkRating">
+            Rating:
+        </label>
+        <input type="number" id="bookmarkRating" />
+        <button type="submit">
+            Add Bookmark
+        </button>
+    </form>
+    <p>
+
+    </p>
+    <form class="delete-bookmark-form">
+        <label for="bookmarkID">
+            ID:
+        </label>
+        <input type="text" id="bookmarkID" />
+        <button type="submit">
+            Delete Bookmark
+        </button>
+    </form>
+    <p>
+
+    </p>
+    <form class="update-bookmark-form">
+        <label for="updateBookmarkID">
+            ID:
+        </label>
+        <input type="text" id="updateBookmarkID" />
+        <label for="updateBookmarkTitle">
+            Title:
+        </label>
+        <input type="text" id="updateBookmarkTitle" />
+        <label for="updateBookmarkDes">
+            Description:
+        </label>
+        <input type="text" id="updateBookmarkDes" />
+        <label for="updateBookmarkUrl">
+            url:
+        </label>
+        <input type="text" id="updateBookmarkUrl" />
+        <label for="updateBookmarkRating">
+            Rating:
+        </label>
+        <input type="number" id="updateBookmarkRating" />
+        <button type="submit">
+            Update Bookmark
+        </button>
+    </form>
+    <p>
+
+    </p>
+    <form class="get-bookmark-by-title-form">
+        <label for="getBookmarkTitle">
+            Title:
+        </label>
+        <input type="text" id="getBookmarkTitle" />
+        <button type="submit">
+            Get Bookmark
+        </button>
+    </form>
+    <section class="results">
+
+    </section>
+    <script src="./js/index.js"></script>
+</body>
+
+</html>
