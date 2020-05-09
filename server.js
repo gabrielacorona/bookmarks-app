@@ -7,7 +7,10 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const uuid = require('uuid');
 const mongoose = require('mongoose');
-
+const {
+    DATABASE_URL,
+    PORT
+} = require('./config');
 
 
 const validateKey = require('./middleware/validate-bearer-token');
@@ -52,22 +55,20 @@ app.patch('/bookmark/:id', jsonParser, (req, res) => {
             if (itemToUpdate.length === 0) {
                 res.statusMessage = "Id not found";
                 return res.status(404).end();
-            } 
-            else {
-               Bookmarks
-                    .patchbyId(id,title,description,url,Number(rating))
-                    .then(result=>{
-                        if(!result){
+            } else {
+                Bookmarks
+                    .patchbyId(id, title, description, url, Number(rating))
+                    .then(result => {
+                        if (!result) {
                             res.statusMessage = "Id not found";
-                            return res.status(404).end(); 
-                        }
-                        else{
+                            return res.status(404).end();
+                        } else {
                             console.log(!result)
 
                             res.statusMessage = "updated";
                             return res.status(200).json(result);
                         }
-                    }) 
+                    })
             }
         })
         .catch(err => {
@@ -116,7 +117,7 @@ app.post('/bookmarks', jsonParser, (req, res) => {
     let url = req.body.url;
     let rating = req.body.rating;
 
-    console.log(!title,!description,!url,!rating)
+    console.log(!title, !description, !url, !rating)
 
     if (!title || !description || !url || !rating) {
         res.statusMessage = "missing param";
@@ -192,13 +193,17 @@ app.get('/bookmarks', (req, res) => {
 });
 
 
-app.listen(8080, () => {
+app.listen(PORT, () => {
     console.log("This server is running on port 8080");
 
     new Promise((resolve, reject) => {
-            mongoose.connect('mongodb://localhost/bookmarksdb', {
+            const settings = {
                 useNewUrlParser: true,
-                useUnifiedTopology: true
+                useUnifiedTopology: true,
+                useCreateIndex: true
+            };
+            mongoose.connect(DATABASE_URL, {
+                settings
             }, (err) => {
                 if (err) {
                     reject(err);
@@ -211,6 +216,9 @@ app.listen(8080, () => {
         .catch(err => {
             mongoose.disconnect();
             console.log(err);
-        })
+        });
 });
+
+
+
 //http://localhost:8080

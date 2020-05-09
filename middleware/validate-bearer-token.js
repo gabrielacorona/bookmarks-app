@@ -1,5 +1,5 @@
 
-const APIKEY = "2abbf7c3-245b-404f-9473-ade729ed4653";
+const {API_KEY} = require('./../config');
 
 function validateKey(req, res, next) {
     if (!req.headers.authorization) {
@@ -7,7 +7,7 @@ function validateKey(req, res, next) {
         return res.status(401).end();
     }
 
-    if (req.headers.authorization !== `Bearer ${APIKEY}`) {
+    if (req.headers.authorization !== `Bearer ${API_KEY}`) {
         res.statusMessage = "invalid api key";
         return res.status(401).end();
     }
