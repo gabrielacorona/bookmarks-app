@@ -77,8 +77,32 @@ const {
 and substitute the places where these values should be used for the name of the constant. Make sure to use the same names as in the config file or it will not work.
 Try making calls through postman to see if everything works
 ### 6. Connect to the ATLAS Cluster
-After debugging, you will replace process.env.DATABASE_URL  with the atlas url
+After debugging, you will replace process.env.DATABASE_URL  with the atlas url in order to keep it private
 
+
+### 7. Navigate from the terminal to where your project is
+go to the specific file where the project git is located
+
+### 8. Heroku setup
+run:
+-> heroku login (and press any key to login from the browswer)
+-> heroku create (it will give you two random urls)
+-> git push heroku master (to keep everything from the master branch up to date in the heroku website)
+->heroku ps:scale web=1 (this creates a venv where the server will be run on a free heroku tier)
+-> if you need to update it there is no need to run these commands
+
+To update heroku
+--> heroku login
+--> git push heroku master
+
+Get logs about application error
+--> heroku logs --tail
+
+
+
+
+### 9. Change from package.json
+change nodemon to node so heroku can run it properly
 
 
 
