@@ -105,5 +105,11 @@ Get logs about application error
 change nodemon to node so heroku can run it properly
 
 
+### 10. Add Environment Variables to heroku
+go to the heroku website and access the settings tab
+click reveal config vars to add the variables from the config.json
+in the case of bookmarks db add the DATABASE_URL as well as the API_KEY
+
+
 
 
